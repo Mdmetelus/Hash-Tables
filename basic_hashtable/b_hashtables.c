@@ -131,6 +131,12 @@ void hash_table_remove(BasicHashTable *ht, char *key)
  ****/
 char *hash_table_retrieve(BasicHashTable *ht, char *key)
 {
+  // make an index from key
+  unsigned int index = hash(key, ht->capacity);
+
+  //pair from storage
+  Pair *pair_to_return = ht->storage[index];
+
   return NULL;
 }
 
