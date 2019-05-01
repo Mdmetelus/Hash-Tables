@@ -144,7 +144,7 @@ char *hash_table_retrieve(BasicHashTable *ht, char *key)
     return NULL;
   }
 
-  return ;
+  return pair_to_return->value;
 }
 
 /****
@@ -154,7 +154,10 @@ char *hash_table_retrieve(BasicHashTable *ht, char *key)
  ****/
 void destroy_hash_table(BasicHashTable *ht)
 {
-
+  for ()
+  {
+    
+  }
 }
 
 
