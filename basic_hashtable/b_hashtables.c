@@ -95,6 +95,7 @@ void hash_table_insert(BasicHashTable *ht, char *key, char *value)
 
   if (old_pair_at_index != NULL)
   {
+    // data overwrite warning
     if (strcmp(key, old_pair_at_index->key) != 0) {
       fprintf(stderr, "Overwritting data.");
     }
