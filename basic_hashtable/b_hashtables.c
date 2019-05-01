@@ -141,6 +141,7 @@ char *hash_table_retrieve(BasicHashTable *ht, char *key)
   if (pair_to_return == NULL)
   {
     fprintf(stderr, "Key does not exist");
+    return NULL;
   }
 
   return ;
