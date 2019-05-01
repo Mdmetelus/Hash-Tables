@@ -115,10 +115,13 @@ void hash_table_remove(BasicHashTable *ht, char *key)
 {
   // index
   unsigned int index = hash(key, ht->capacity);
-  //
+  //find pair
   Pair *pair_to_remove = ht->storage[index];
 
   destroy_pair(pair_to_remove);
+
+  // set index to null
+  ht->storage[index] = NULL;
 }
 
 /****
