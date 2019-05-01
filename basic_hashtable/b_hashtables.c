@@ -137,7 +137,7 @@ char *hash_table_retrieve(BasicHashTable *ht, char *key)
   //pair from storage
   Pair *pair_to_return = ht->storage[index];
 
-  return NULL;
+  return ;
 }
 
 /****
