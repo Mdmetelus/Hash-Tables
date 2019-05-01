@@ -161,6 +161,8 @@ void destroy_hash_table(BasicHashTable *ht)
     destroy_pair(ht->storage[i]);
   }
 
+  free(ht->storage);
+  
   free(ht);
 
 }
