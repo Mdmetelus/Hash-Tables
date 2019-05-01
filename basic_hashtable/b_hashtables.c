@@ -86,7 +86,12 @@ BasicHashTable *create_hash_table(int capacity)
  ****/
 void hash_table_insert(BasicHashTable *ht, char *key, char *value)
 {
-
+  // index
+  unsigned int index = hash(key, ht->capacity);
+  // pair
+  Pair *pair = create_pair(key, value);
+  // pointer to storage at the hashed index
+  Pair *old_pair_at_index = ht->storage[index];
 }
 
 /****
