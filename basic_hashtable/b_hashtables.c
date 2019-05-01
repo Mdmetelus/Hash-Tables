@@ -92,6 +92,17 @@ void hash_table_insert(BasicHashTable *ht, char *key, char *value)
   Pair *pair = create_pair(key, value);
   // pointer to storage at the hashed index
   Pair *old_pair_at_index = ht->storage[index];
+
+  if (old_pair_at_index != NULL)
+  {
+    if (strcmp(key, old_pair_at_index->key) != 0) {
+      fprintf(stderr, "Overwritting data.");
+    }
+      // free any malloc memory.
+      destroy_pair(old_pair_at_index);
+    }
+    // new pair
+    ht->storage[index] = pair;
 }
 
 /****
