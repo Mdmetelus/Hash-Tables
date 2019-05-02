@@ -205,7 +205,11 @@ void destroy_hash_table(HashTable *ht)
 {
   for (int i = 0; i < ht->capacity; i++)
   {
-    
+    while (ht->storage[i] != NULL)
+    {
+      destroy_pair(ht->storage[i]);
+      ht->storage[i] = ht->storage[i]->next;
+    }
   }
   free(ht->storage);
   free(ht);
@@ -221,7 +225,17 @@ void destroy_hash_table(HashTable *ht)
  */
 HashTable *hash_table_resize(HashTable *ht)
 {
-  HashTable *new_ht;
+  HashTable *new_ht = malloc(sizeof(HashTable));
+  // doubling the capacity
+  new_ht->capacity = ht->capacity * 2;
+  new_ht->storage = calloc(new_ht->capacity, sizeof(LinkedPair));
+
+  // loops to call insert and copy ht to new_ht
+  for (int i = 0; i < ht->capacity; i++)
+  {
+    
+  }
+  destroy_hash_table(ht);
 
   return new_ht;
 }
