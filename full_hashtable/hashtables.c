@@ -92,9 +92,9 @@ HashTable *create_hash_table(int capacity)
 void hash_table_insert(HashTable *ht, char *key, char *value)
 {
   unsigned int index = hash(key, ht->capacity);
-
+  // current
   LinkedPair *current = ht->storage[index];
-
+  // previous
   LinkedPair *previous = NULL;
 
   // traverse list via loop to find key
@@ -127,6 +127,15 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
 void hash_table_remove(HashTable *ht, char *key)
 {
   unsigned int index = hash(key, ht->capacity);
+  // current
+  LinkedPair *current = ht->storage[index];
+  // previous
+  LinkedPair *previous = NULL;
+  // searching for a matching key
+  while (strcmp(current->key, key) != 0 && current != NULL)
+  {
+    
+  }
 }
 
 /*
@@ -139,6 +148,23 @@ void hash_table_remove(HashTable *ht, char *key)
  */
 char *hash_table_retrieve(HashTable *ht, char *key)
 {
+  unsigned int index = hash(key, ht->capacity);
+
+  LinkedPair *current = ht->storage[index];
+
+  LinkedPair *previous = NULL;
+
+  // return null if noting in the index
+  if (current == NULL) {
+    fprintf(stderr, "Key not found in the Index");
+    return NULL;
+  }
+  //return value when the current and key are the same
+  if (strcmp(current->key, key) == 0)
+  {
+    return current->value;
+  }
+
   return NULL;
 }
 
