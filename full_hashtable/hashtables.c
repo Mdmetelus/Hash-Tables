@@ -103,6 +103,17 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
     previous = current;
     current = current->next;
   }
+
+
+  if (current != NULL) {
+    current->value = value;
+  }
+  else {
+    // create new linked pair & point to storage[index] pair
+    LinkedPair *pair = create_pair(key, value);
+    pair->next = ht->storage[index];
+    ht->storage[index] = pair;
+  }
 }
 
 /*
