@@ -91,7 +91,18 @@ HashTable *create_hash_table(int capacity)
  */
 void hash_table_insert(HashTable *ht, char *key, char *value)
 {
+  unsigned int index = hash(key, ht->capacity);
 
+  LinkedPair *current = ht->storage[index];
+
+  LinkedPair *previous = NULL;
+
+  // traverse list via loop to find key
+  while (current != NULL && strcmp(current->key, key) != 0)
+  {
+    previous = current;
+    current = current->next;
+  }
 }
 
 /*
