@@ -104,7 +104,7 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
  */
 void hash_table_remove(HashTable *ht, char *key)
 {
-
+  unsigned int index = hash(key, ht->capacity);
 }
 
 /*
