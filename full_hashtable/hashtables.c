@@ -174,7 +174,9 @@ char *hash_table_retrieve(HashTable *ht, char *key)
   if (strcmp(current->key, key) == 0)
   {
     return current->value;
-  } else {
+  } 
+  else 
+  {
     // find the key loop
     while (current != NULL && strcmp(current->key, key) != 0)
     {
@@ -236,7 +238,14 @@ HashTable *hash_table_resize(HashTable *ht)
     LinkedPair *current = ht->storage[i];
     if (current != NULL)
     {
-      
+      hash_table_insert(new_ht, ht->storage[i]->key, ht->storage[i]->value);
+      // traverse list while there is a next
+      while (current->next != NULL)
+      {
+        // call insert
+        hash_table_insert(new_ht, ht->storage[i]->next->key, ht->storage[i]->next->value);
+        current = ht->storage[i]->next;
+      }
     }
   }
   destroy_hash_table(ht);
