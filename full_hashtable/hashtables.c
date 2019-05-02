@@ -163,6 +163,23 @@ char *hash_table_retrieve(HashTable *ht, char *key)
   if (strcmp(current->key, key) == 0)
   {
     return current->value;
+  } else {
+    // find the key loop
+    while (current != NULL && strcmp(current->key, key) != 0)
+    {
+      previous = current;
+      current = current->next;
+    }
+    // keys matches return value else null/print
+    if (strcmp(current->key, key) == 0)
+    {
+      return current->value;
+    }
+    else
+    {
+      fprintf(stderr, "That Key was not found");
+      return NULL;
+    }
   }
 
   return NULL;
