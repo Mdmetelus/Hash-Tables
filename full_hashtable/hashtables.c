@@ -207,7 +207,8 @@ void destroy_hash_table(HashTable *ht)
   {
     
   }
-  
+  free(ht->storage);
+  free(ht);
 }
 
 /*
