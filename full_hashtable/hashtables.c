@@ -141,7 +141,7 @@ void hash_table_remove(HashTable *ht, char *key)
   if (previous != NULL) {
 
     previous->next = current->next;
-    
+
   } else {
     ht->storage[index] = current->next;
   }
@@ -203,7 +203,11 @@ char *hash_table_retrieve(HashTable *ht, char *key)
  */
 void destroy_hash_table(HashTable *ht)
 {
-
+  for (int i = 0; i < ht->capacity; i++)
+  {
+    
+  }
+  
 }
 
 /*
