@@ -230,10 +230,14 @@ HashTable *hash_table_resize(HashTable *ht)
   new_ht->capacity = ht->capacity * 2;
   new_ht->storage = calloc(new_ht->capacity, sizeof(LinkedPair));
 
-  // loops to call insert and copy ht to new_ht
+  // calling insert and copy ht to new_ht
   for (int i = 0; i < ht->capacity; i++)
   {
-    
+    LinkedPair *current = ht->storage[i];
+    if (current != NULL)
+    {
+      
+    }
   }
   destroy_hash_table(ht);
 
