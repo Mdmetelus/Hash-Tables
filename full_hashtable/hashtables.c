@@ -132,10 +132,21 @@ void hash_table_remove(HashTable *ht, char *key)
   // previous
   LinkedPair *previous = NULL;
   // searching for a matching key
-  while (strcmp(current->key, key) != 0 && current != NULL)
-  {
-    
+  while (strcmp(current->key, key) != 0 && current != NULL) {
+    previous = current;
+
+    current = current->next;
   }
+  // if there is a previous assign previous's next to current's, to remove current from list
+  if (previous != NULL) {
+
+    previous->next = current->next;
+    
+  } else {
+    ht->storage[index] = current->next;
+  }
+  // current to null
+  current = NULL;
 }
 
 /*
