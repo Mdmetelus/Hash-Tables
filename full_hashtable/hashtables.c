@@ -73,7 +73,9 @@ unsigned int hash(char *str, int max)
  */
 HashTable *create_hash_table(int capacity)
 {
-  HashTable *ht;
+  HashTable *ht = malloc(sizeof(HashTable));
+  ht->capacity = capacity;
+  ht->storage = calloc(capacity, sizeof(LinkedPair *));
 
   return ht;
 }
@@ -89,7 +91,29 @@ HashTable *create_hash_table(int capacity)
  */
 void hash_table_insert(HashTable *ht, char *key, char *value)
 {
+  unsigned int index = hash(key, ht->capacity);
+  // current
+  LinkedPair *current = ht->storage[index];
+  // previous
+  LinkedPair *previous = NULL;
 
+  // traverse list via loop to find key
+  while (current != NULL && strcmp(current->key, key) != 0)
+  {
+    previous = current;
+    current = current->next;
+  }
+
+
+  if (current != NULL) {
+    current->value = value;
+  }
+  else {
+    // create new linked pair & point to storage[index] pair
+    LinkedPair *pair = create_pair(key, value);
+    pair->next = ht->storage[index];
+    ht->storage[index] = pair;
+  }
 }
 
 /*
@@ -102,7 +126,27 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
  */
 void hash_table_remove(HashTable *ht, char *key)
 {
+  unsigned int index = hash(key, ht->capacity);
+  // current
+  LinkedPair *current = ht->storage[index];
+  // previous
+  LinkedPair *previous = NULL;
+  // searching for a matching key
+  while (strcmp(current->key, key) != 0 && current != NULL) {
+    previous = current;
 
+    current = current->next;
+  }
+  // if there is a previous assign previous's next to current's, to remove current from list
+  if (previous != NULL) {
+
+    previous->next = current->next;
+
+  } else {
+    ht->storage[index] = current->next;
+  }
+  // current to null
+  current = NULL;
 }
 
 /*
@@ -115,6 +159,42 @@ void hash_table_remove(HashTable *ht, char *key)
  */
 char *hash_table_retrieve(HashTable *ht, char *key)
 {
+  unsigned int index = hash(key, ht->capacity);
+
+  LinkedPair *current = ht->storage[index];
+
+  LinkedPair *previous = NULL;
+
+  // return null if noting in the index
+  if (current == NULL) {
+    fprintf(stderr, "Key not found in the Index");
+    return NULL;
+  }
+  //return value when the current and key are the same
+  if (strcmp(current->key, key) == 0)
+  {
+    return current->value;
+  } 
+  else 
+  {
+    // find the key loop
+    while (current != NULL && strcmp(current->key, key) != 0)
+    {
+      previous = current;
+      current = current->next;
+    }
+    // keys matches return value else null/print
+    if (strcmp(current->key, key) == 0)
+    {
+      return current->value;
+    }
+    else
+    {
+      fprintf(stderr, "That Key was not found");
+      return NULL;
+    }
+  }
+
   return NULL;
 }
 
@@ -125,7 +205,16 @@ char *hash_table_retrieve(HashTable *ht, char *key)
  */
 void destroy_hash_table(HashTable *ht)
 {
-
+  for (int i = 0; i < ht->capacity; i++)
+  {
+    while (ht->storage[i] != NULL)
+    {
+      destroy_pair(ht->storage[i]);
+      ht->storage[i] = ht->storage[i]->next;
+    }
+  }
+  free(ht->storage);
+  free(ht);
 }
 
 /*
@@ -138,7 +227,28 @@ void destroy_hash_table(HashTable *ht)
  */
 HashTable *hash_table_resize(HashTable *ht)
 {
-  HashTable *new_ht;
+  HashTable *new_ht = malloc(sizeof(HashTable));
+  // doubling the capacity
+  new_ht->capacity = ht->capacity * 2;
+  new_ht->storage = calloc(new_ht->capacity, sizeof(LinkedPair));
+
+  // calling insert and copy ht to new_ht
+  for (int i = 0; i < ht->capacity; i++)
+  {
+    LinkedPair *current = ht->storage[i];
+    if (current != NULL)
+    {
+      hash_table_insert(new_ht, ht->storage[i]->key, ht->storage[i]->value);
+      // traverse list while there is a next
+      while (current->next != NULL)
+      {
+        // call insert
+        hash_table_insert(new_ht, ht->storage[i]->next->key, ht->storage[i]->next->value);
+        current = ht->storage[i]->next;
+      }
+    }
+  }
+  destroy_hash_table(ht);
 
   return new_ht;
 }

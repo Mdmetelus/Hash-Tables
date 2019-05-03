@@ -70,7 +70,9 @@ unsigned int hash(char *str, int max)
  ****/
 BasicHashTable *create_hash_table(int capacity)
 {
-  BasicHashTable *ht;
+  BasicHashTable *ht = malloc(sizeof(BasicHashTable));
+  ht->capacity = capacity;
+  ht->storage = calloc(capacity, sizeof(Pair *));
 
   return ht;
 }
@@ -84,7 +86,24 @@ BasicHashTable *create_hash_table(int capacity)
  ****/
 void hash_table_insert(BasicHashTable *ht, char *key, char *value)
 {
+  // index
+  unsigned int index = hash(key, ht->capacity);
+  // pair
+  Pair *pair = create_pair(key, value);
+  // pointer to storage at the hashed index
+  Pair *old_pair_at_index = ht->storage[index];
 
+  if (old_pair_at_index != NULL)
+  {
+    // data overwrite warning
+    if (strcmp(key, old_pair_at_index->key) != 0) {
+      fprintf(stderr, "Overwritting data.");
+    }
+      // free any malloc memory.
+      destroy_pair(old_pair_at_index);
+    }
+    // new pair
+    ht->storage[index] = pair;
 }
 
 /****
@@ -94,7 +113,15 @@ void hash_table_insert(BasicHashTable *ht, char *key, char *value)
  ****/
 void hash_table_remove(BasicHashTable *ht, char *key)
 {
+  // index
+  unsigned int index = hash(key, ht->capacity);
+  //find pair
+  Pair *pair_to_remove = ht->storage[index];
 
+  destroy_pair(pair_to_remove);
+
+  // set index to null
+  ht->storage[index] = NULL;
 }
 
 /****
@@ -104,7 +131,20 @@ void hash_table_remove(BasicHashTable *ht, char *key)
  ****/
 char *hash_table_retrieve(BasicHashTable *ht, char *key)
 {
-  return NULL;
+  // make an index from key
+  unsigned int index = hash(key, ht->capacity);
+
+  //pair from storage
+  Pair *pair_to_return = ht->storage[index];
+
+  // if no key found return null
+  if (pair_to_return == NULL)
+  {
+    fprintf(stderr, "Key does not exist");
+    return NULL;
+  }
+
+  return pair_to_return->value;
 }
 
 /****
@@ -114,6 +154,16 @@ char *hash_table_retrieve(BasicHashTable *ht, char *key)
  ****/
 void destroy_hash_table(BasicHashTable *ht)
 {
+
+  // free all the pairs 
+  for (int i = 0; i < ht->capacity; i++)
+  {
+    destroy_pair(ht->storage[i]);
+  }
+
+  free(ht->storage);
+  
+  free(ht);
 
 }
 
